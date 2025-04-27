@@ -1,9 +1,10 @@
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
 
 public class CustomerPage extends JFrame {
     public CustomerPage(String username) {
-        setTitle("Halaman Nasabah");
+        setTitle("Halaman Nasabah - " + username);
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -18,11 +19,37 @@ public class CustomerPage extends JFrame {
         JButton simulasiSBNButton = new JButton("Simulasi SBN");
         JButton logoutButton = new JButton("Logout");
 
+        // Add action listeners to buttons
+        viewPortfolioButton.addActionListener(e -> {
+            new PortfolioWindow(username).setVisible(true);
+        });
+
+        buySahamButton.addActionListener(e -> {
+            new BuySahamWindow(username).setVisible(true);
+        });
+
+        buySBNButton.addActionListener(e -> {
+            new BuySBNWindow(username).setVisible(true);
+        });
+
+        simulasiSBNButton.addActionListener(e -> {
+            new SimulasiSBNWindow(username).setVisible(true);
+        });
+
+        logoutButton.addActionListener(e -> {
+            this.dispose();
+            // Recreate login page with original credentials
+            HashMap<String, String> loginInfo = new HashMap<>();
+            loginInfo.put("admin", "admin123");
+            loginInfo.put("customer", "customer123");
+            new LoginPage(loginInfo);
+        });
+
         // Layout setup
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(welcomeLabel, BorderLayout.NORTH);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
+        JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 10, 10));
         buttonPanel.add(viewPortfolioButton);
         buttonPanel.add(buySahamButton);
         buttonPanel.add(buySBNButton);
@@ -31,6 +58,5 @@ public class CustomerPage extends JFrame {
         panel.add(buttonPanel, BorderLayout.CENTER);
 
         add(panel);
-        setVisible(true);
     }
 }

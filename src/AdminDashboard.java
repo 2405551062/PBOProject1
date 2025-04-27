@@ -8,14 +8,16 @@ public class AdminDashboard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Admin-specific components
         JLabel welcomeLabel = new JLabel("Selamat Datang Admin", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         JButton manageSahamButton = new JButton("Kelola Saham");
         JButton manageSBNButton = new JButton("Kelola SBN");
 
-        // Layout setup
+        manageSahamButton.addActionListener(e -> new KelolaSahamWindow().setVisible(true));
+
+        manageSBNButton.addActionListener(e -> new KelolaSBNWindow().setVisible(true));
+
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(welcomeLabel, BorderLayout.NORTH);
 
