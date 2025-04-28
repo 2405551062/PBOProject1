@@ -1,89 +1,128 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionListener;
 
-// Window Admin untuk Kelola SBN
 class KelolaSBNWindow extends JFrame {
-    private List<SuratBerhargaNegara> daftarSBN = new ArrayList<>();
-    private DefaultListModel<String> listModel = new DefaultListModel<>();
-    private JList<String> sbnList;
+    private DefaultTableModel sbnModel;
+    private JTable sbnTable;
+    private JTextField namaField, bungaField, jangkaWaktuField, jatuhTempoField, kuotaField;
 
     public KelolaSBNWindow() {
         setTitle("Kelola SBN");
-        setSize(600, 400);
+        setSize(700, 450);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
-        // List untuk menampilkan SBN
-        sbnList = new JList<>(listModel);
-        add(new JScrollPane(sbnList), BorderLayout.CENTER);
+        // Tabel
+        String[] columns = {"Nama", "Bunga (%)", "Jangka Waktu (bln)", "Tanggal Jatuh Tempo", "Kuota Nasional"};
+        sbnModel = new DefaultTableModel(columns, 0);
+        sbnTable = new JTable(sbnModel);
 
-        // Panel tombol
-        JPanel panelButton = new JPanel(new GridLayout(2, 1, 10, 10));
-        JButton tambahButton = new JButton("Tambah SBN");
-        JButton kembaliButton = new JButton("Kembali");
+        loadSbnData();
 
-        panelButton.add(tambahButton);
-        panelButton.add(kembaliButton);
-        add(panelButton, BorderLayout.SOUTH);
+        add(new JScrollPane(sbnTable), BorderLayout.CENTER);
 
-        // Aksi tombol tambah
-        tambahButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tambahSBN();
-            }
-        });
+        // Input
+        JPanel inputPanel = new JPanel(new GridLayout(6, 2, 10, 10));
 
-        // Aksi tombol kembali
-        kembaliButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose(); // Menutup window
-            }
-        });
+        inputPanel.add(new JLabel("Nama:"));
+        namaField = new JTextField();
+        inputPanel.add(namaField);
+
+        inputPanel.add(new JLabel("Bunga (% per tahun):"));
+        bungaField = new JTextField();
+        inputPanel.add(bungaField);
+
+        inputPanel.add(new JLabel("Jangka Waktu (bulan):"));
+        jangkaWaktuField = new JTextField();
+        inputPanel.add(jangkaWaktuField);
+
+        inputPanel.add(new JLabel("Tanggal Jatuh Tempo (yyyy-mm-dd):"));
+        jatuhTempoField = new JTextField();
+        inputPanel.add(jatuhTempoField);
+
+        inputPanel.add(new JLabel("Kuota Nasional:"));
+        kuotaField = new JTextField();
+        inputPanel.add(kuotaField);
+
+        JButton addButton = new JButton("Tambah SBN");
+        JButton deleteButton = new JButton("Hapus SBN");
+
+        inputPanel.add(addButton);
+        inputPanel.add(deleteButton);
+
+        add(inputPanel, BorderLayout.SOUTH);
+
+        addButton.addActionListener(addAction());
+        deleteButton.addActionListener(deleteAction());
     }
 
-    private void tambahSBN() {
-        // Membuka dialog input untuk data SBN
-        JTextField namaField = new JTextField();
-        JTextField bungaField = new JTextField();
-        JTextField jangkaField = new JTextField();
-        JTextField jatuhTempoField = new JTextField();
-        JTextField kuotaField = new JTextField();
-
-        JPanel panel = new JPanel(new GridLayout(0, 1));
-        panel.add(new JLabel("Nama:"));
-        panel.add(namaField);
-        panel.add(new JLabel("Bunga (%):"));
-        panel.add(bungaField);
-        panel.add(new JLabel("Jangka Waktu (tahun):"));
-        panel.add(jangkaField);
-        panel.add(new JLabel("Tanggal Jatuh Tempo (YYYY-MM-DD):"));
-        panel.add(jatuhTempoField);
-        panel.add(new JLabel("Kuota Nasional:"));
-        panel.add(kuotaField);
-
-        int result = JOptionPane.showConfirmDialog(this, panel, "Tambah SBN Baru", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (result == JOptionPane.OK_OPTION) {
-            try {
-                String nama = namaField.getText();
-                double bunga = Double.parseDouble(bungaField.getText());
-                int jangkaWaktu = Integer.parseInt(jangkaField.getText());
-                String jatuhTempo = jatuhTempoField.getText();
-                int kuotaNasional = Integer.parseInt(kuotaField.getText());
-
-                SuratBerhargaNegara sbn = new SuratBerhargaNegara(nama, bunga, jangkaWaktu, kuotaNasional, jatuhTempo);
-                daftarSBN.add(sbn);
-                listModel.addElement(sbn.toString());
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Input tidak valid. Pastikan format angka benar.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+    private void loadSbnData() {
+        sbnModel.setRowCount(0); // Clear table
+        for (SuratBerhargaNegara sbn : DataCenter.availableSBNList) {
+            sbnModel.addRow(new Object[]{
+                    sbn.nama,
+                    String.format("%.2f", sbn.bunga),
+                    sbn.jangkaWaktu,
+                    sbn.jatuhTempo,
+                    sbn.kuotaNasional
+            });
         }
+    }
+
+    private ActionListener addAction() {
+        return e -> {
+            String nama = namaField.getText().trim();
+            String bungaText = bungaField.getText().trim();
+            String jangkaText = jangkaWaktuField.getText().trim();
+            String jatuhTempo = jatuhTempoField.getText().trim();
+            String kuotaText = kuotaField.getText().trim();
+
+            if (nama.isEmpty() || bungaText.isEmpty() || jangkaText.isEmpty() || jatuhTempo.isEmpty() || kuotaText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Semua field harus diisi!");
+                return;
+            }
+
+            try {
+                double bunga = Double.parseDouble(bungaText);
+                int jangkaWaktu = Integer.parseInt(jangkaText);
+                int kuotaNasional = Integer.parseInt(kuotaText);
+
+                SuratBerhargaNegara newSbn = new SuratBerhargaNegara(nama, bunga, jangkaWaktu, kuotaNasional, jatuhTempo);
+                DataCenter.availableSBNList.add(newSbn);
+
+                loadSbnData();
+                JOptionPane.showMessageDialog(this, "SBN berhasil ditambahkan!");
+
+                // Clear input
+                namaField.setText("");
+                bungaField.setText("");
+                jangkaWaktuField.setText("");
+                jatuhTempoField.setText("");
+                kuotaField.setText("");
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Bunga, Jangka Waktu, dan Kuota harus berupa angka!");
+            }
+        };
+    }
+
+    private ActionListener deleteAction() {
+        return e -> {
+            int selectedRow = sbnTable.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Pilih SBN yang akan dihapus!");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus SBN ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                DataCenter.availableSBNList.remove(selectedRow);
+                loadSbnData();
+                JOptionPane.showMessageDialog(this, "SBN berhasil dihapus!");
+            }
+        };
     }
 }

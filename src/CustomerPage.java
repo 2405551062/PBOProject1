@@ -38,7 +38,7 @@ public class CustomerPage extends JFrame {
 
         logoutButton.addActionListener(e -> {
             this.dispose();
-            // Recreate login page with original credentials
+            // Recreate login page
             HashMap<String, String> loginInfo = new HashMap<>();
             loginInfo.put("admin", "12345");
             loginInfo.put("customer", "abcde");

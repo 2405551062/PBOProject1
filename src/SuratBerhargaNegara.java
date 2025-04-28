@@ -1,11 +1,9 @@
-import java.time.LocalDate;
-
 class SuratBerhargaNegara {
     String nama;
     double bunga;
-    int jangkaWaktu; // dalam bulan
+    int jangkaWaktu;
     double kuotaNasional;
-    String jatuhTempo; // <-- variabel baru
+    String jatuhTempo;
 
     public SuratBerhargaNegara(String nama, double bunga, int jangkaWaktu, double kuotaNasional, String jatuhTempo) {
         this.nama = nama;

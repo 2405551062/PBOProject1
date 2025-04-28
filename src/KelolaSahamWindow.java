@@ -1,93 +1,113 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
+import java.awt.event.ActionListener;
 
-public class KelolaSahamWindow extends JFrame {
-    private JTextField kodeField;
-    private JTextField namaPerusahaanField;
-    private JTextField hargaField;
-    private JButton tambahButton;
-    private JTextArea daftarSahamArea;
-
-    private ArrayList<Saham> daftarSaham; // Data disimpan di memori
+class KelolaSahamWindow extends JFrame {
+    private DefaultTableModel sahamModel;
+    private JTable sahamTable;
+    private JTextField kodeField, namaField, hargaField;
 
     public KelolaSahamWindow() {
         setTitle("Kelola Saham");
-        setSize(600, 500);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        daftarSaham = new ArrayList<>();
+        // Tabel
+        String[] columns = {"Kode", "Nama Perusahaan", "Harga (Rp)"};
+        sahamModel = new DefaultTableModel(columns, 0);
+        sahamTable = new JTable(sahamModel);
 
-        // Panel input
-        JPanel inputPanel = new JPanel(new GridLayout(10, 2, 20, 20));
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        loadSahamData();
 
-        inputPanel.add(new JLabel("Kode Saham:"));
+        add(new JScrollPane(sahamTable), BorderLayout.CENTER);
+
+        // Input
+        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+
+        inputPanel.add(new JLabel("Kode:"));
         kodeField = new JTextField();
         inputPanel.add(kodeField);
 
         inputPanel.add(new JLabel("Nama Perusahaan:"));
-        namaPerusahaanField = new JTextField();
-        inputPanel.add(namaPerusahaanField);
+        namaField = new JTextField();
+        inputPanel.add(namaField);
 
-        inputPanel.add(new JLabel("Harga Saham:"));
+        inputPanel.add(new JLabel("Harga:"));
         hargaField = new JTextField();
         inputPanel.add(hargaField);
 
-        tambahButton = new JButton("Tambah Saham");
-        inputPanel.add(tambahButton);
+        JButton addButton = new JButton("Tambah Saham");
+        JButton deleteButton = new JButton("Hapus Saham");
 
-        // Area daftar saham
-        daftarSahamArea = new JTextArea();
-        daftarSahamArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(daftarSahamArea);
+        inputPanel.add(addButton);
+        inputPanel.add(deleteButton);
 
-        // Tambahkan listener ke tombol
-        tambahButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tambahSaham();
-            }
-        });
+        add(inputPanel, BorderLayout.SOUTH);
 
-        // Layout utama
-        setLayout(new BorderLayout());
-        add(inputPanel, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        addButton.addActionListener(addAction());
+        deleteButton.addActionListener(deleteAction());
     }
 
-    private void tambahSaham() {
-        try {
-            String kode = kodeField.getText();
-            String namaPerusahaan = namaPerusahaanField.getText();
-            double harga = Double.parseDouble(hargaField.getText());
+    private void loadSahamData() {
+        sahamModel.setRowCount(0); // Refresh
+        for (Saham saham : DataCenter.availableSahamList) {
+            sahamModel.addRow(new Object[]{
+                    saham.kode,
+                    saham.namaPerusahaan,
+                    String.format("%,.2f", saham.harga)
+            });
+        }
+    }
 
-            if (kode.isEmpty() || namaPerusahaan.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+    private ActionListener addAction() {
+        return e -> {
+            String kode = kodeField.getText().trim();
+            String nama = namaField.getText().trim();
+            String hargaText = hargaField.getText().trim();
+
+            if (kode.isEmpty() || nama.isEmpty() || hargaText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Semua field harus diisi!");
                 return;
             }
 
-            Saham sahamBaru = new Saham(kode, namaPerusahaan, harga);
-            daftarSaham.add(sahamBaru);
+            try {
+                double harga = Double.parseDouble(hargaText);
 
-            updateDaftarSaham();
+                // Buat object baru dan tambah ke list
+                Saham newSaham = new Saham(kode, nama, harga);
+                DataCenter.availableSahamList.add(newSaham);
 
-            // Bersihkan input
-            kodeField.setText("");
-            namaPerusahaanField.setText("");
-            hargaField.setText("");
+                loadSahamData();
+                JOptionPane.showMessageDialog(this, "Saham berhasil ditambahkan!");
 
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Harga harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+                // Clear input
+                kodeField.setText("");
+                namaField.setText("");
+                hargaField.setText("");
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Harga harus berupa angka!");
+            }
+        };
     }
 
-    private void updateDaftarSaham() {
-        daftarSahamArea.setText("");
-        for (Saham saham : daftarSaham) {
-            daftarSahamArea.append(saham.toString() + "\n");
-        }
+    private ActionListener deleteAction() {
+        return e -> {
+            int selectedRow = sahamTable.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Pilih saham yang akan dihapus!");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus saham ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                DataCenter.availableSahamList.remove(selectedRow);
+                loadSahamData();
+                JOptionPane.showMessageDialog(this, "Saham berhasil dihapus!");
+            }
+        };
     }
 }
