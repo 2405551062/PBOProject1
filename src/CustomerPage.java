@@ -40,8 +40,8 @@ public class CustomerPage extends JFrame {
             this.dispose();
             // Recreate login page with original credentials
             HashMap<String, String> loginInfo = new HashMap<>();
-            loginInfo.put("admin", "admin123");
-            loginInfo.put("customer", "customer123");
+            loginInfo.put("admin", "12345");
+            loginInfo.put("customer", "abcde");
             new LoginPage(loginInfo);
         });
 
