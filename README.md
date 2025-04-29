@@ -10,8 +10,10 @@ Main.java
 Main adalah kelas utama (entry point) dari program. Di dalam metode main, program:
 Membuat objek UsersandPasswords, yang mungkin berisi data username dan password.
 Membuat objek LoginPage dengan melewatkan informasi login (loginInfo) yang diperoleh dari UsersandPasswords. Ini berarti aplikasi akan menampilkan halaman login yang menggunakan data login yang sudah disiapkan.
+
 **- Class UsersandPasswords**
 adalah kelas yang bertanggung jawab untuk menyimpan dan menyediakan daftar username dan password. Biasanya berisi method seperti getLoginInfo() yang mengembalikan data tersebut, kemungkinan besar dalam bentuk struktur data seperti HashMap<String, String>.
+
 **- Class LoginPage**
 adalah kelas yang membuat tampilan antarmuka untuk login. Objek ini memanfaatkan informasi login dari UsersandPasswords untuk memverifikasi apakah username dan password yang dimasukkan oleh pengguna sudah benar.
 
