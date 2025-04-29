@@ -1,6 +1,10 @@
 Project 1
 -
-**Pembuatan Program Investasi Sederhana Berbasis Command Line**
+**Pembuatan Program Investasi Sederhana Berbasis JFrame**
+
+UML Project
+-
+![UMLProject1](https://github.com/user-attachments/assets/0f0f2c57-1989-402e-9c8f-3574dd8360d9)
 
 Main.java
 -
