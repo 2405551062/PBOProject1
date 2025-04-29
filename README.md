@@ -325,8 +325,7 @@ kuponBulanan = (rate / 100 / 12) * 0.9 * amount
 PortfolioWindow.java
 -
 ![image](https://github.com/user-attachments/assets/14375fed-1429-4f9a-8247-7962ab98c483)
-![image](https://github.com/user-attachments/assets/3c6be00b-7d00-4728-bf6b-41be28273592)
-
+![image](https://github.com/user-attachments/assets/c4beb56b-8a40-48a8-abd0-17748f399341)
 
 PortfolioWindow adalah kelas GUI untuk menampilkan portofolio investasi saham dan SBN milik user yang sedang login.
 
