@@ -1,9 +1,8 @@
 Project 1
---
+-
 
 1.Main.java
---
-![image](https://github.com/user-attachments/assets/b7c96b0b-0c30-4252-9756-c285c587df42)
+-
 
 class Main ()
 
@@ -16,7 +15,9 @@ adalah kelas yang bertanggung jawab untuk menyimpan dan menyediakan daftar usern
 adalah kelas yang membuat tampilan antarmuka untuk login. Objek ini memanfaatkan informasi login dari UsersandPasswords untuk memverifikasi apakah username dan password yang dimasukkan oleh pengguna sudah benar.
 
 2.LoginPage.java
---
+-
+![image](https://github.com/user-attachments/assets/b7c96b0b-0c30-4252-9756-c285c587df42)
+
 LoginPage adalah kelas yang bertanggung jawab untuk membuat dan mengelola tampilan antarmuka pengguna untuk proses login. 
 
 Detail penjelasan:
@@ -43,7 +44,7 @@ Di dalam method actionPerformed():
   - Jika username tidak ditemukan ➔ tampilkan pesan "Username tidak ditemukan".
 
 3.UsersandPasswords.java
--- 
+-
 UsersandPasswords adalah sebuah kelas yang bertanggung jawab untuk menyimpan informasi username dan password. Penjelasan tiap bagian:
 - HashMap<String, String> logininfo: Struktur data yang menyimpan pasangan username dan password (key-value).
 
@@ -54,7 +55,10 @@ UsersandPasswords adalah sebuah kelas yang bertanggung jawab untuk menyimpan inf
 - Method getLoginInfo(): Mengembalikan objek HashMap berisi semua username dan password yang telah disimpan. Method ini dipanggil oleh kelas lain (seperti Main atau ) untuk mendapatkan data login.
 
 4.AdminDashboard.java
---
+-
+![image](https://github.com/user-attachments/assets/9658cad4-3aa7-4829-929f-b388eac1cca3)
+
+
 AdminDashboard adalah kelas yang membuat tampilan khusus untuk user dengan role Admin setelah berhasil login. 
 
 Penjelasan detail:
@@ -74,7 +78,7 @@ Penjelasan detail:
 - Menggunakan BorderLayout untuk mengatur layout, dengan tombol-tombol diatur menggunakan GridLayout vertikal.
 
 5.Saham.java
---
+-
 Saham adalah class model yang merepresentasikan data satu jenis saham dalam sistem.
 
 Penjelasan atribut:
@@ -93,7 +97,9 @@ Saham dipakai oleh class lain seperti:
 - PortfolioWindow → untuk menampilkan portofolio saham user.
 
 6.KelolaSahamWindow.java
---
+-
+![image](https://github.com/user-attachments/assets/9171f47c-2c75-4fd8-aacf-4367429ab9e5)
+
 KelolaSahamWindow adalah kelas yang membangun tampilan admin untuk mengelola daftar saham yang tersedia di aplikasi.
 
 Penjelasan setiap bagian:
@@ -125,7 +131,7 @@ Method deleteAction():
 - Memastikan ada konfirmasi pengguna sebelum menghapus.
 
 7.SuratBerhargaNegara.java
---
+-
 SuratBerhargaNegara (disingkat SBN) adalah class model yang mewakili data produk investasi berupa surat utang yang diterbitkan negara.
 
 Penjelasan atribut:
@@ -141,7 +147,10 @@ Constructor:
 
 
 8.KelolaSBNWindow.java
---
+-
+![image](https://github.com/user-attachments/assets/1b182fb7-773f-42dc-9c96-45be849d13d7)
+
+
 KelolaSBNWindow adalah kelas GUI untuk admin yang memungkinkan pengelolaan daftar Surat Berharga Negara (SBN) dalam aplikasi.
 
 Penjelasan per bagian:
@@ -172,7 +181,10 @@ Method deleteAction():
 - Menampilkan konfirmasi sebelum menghapus.
 
 9.CustomerPage.java
---
+-
+![image](https://github.com/user-attachments/assets/b477b828-a5e5-49ba-9ee9-de0c79fa7a8c)
+
+
 CustomerPage adalah kelas yang membangun halaman utama untuk pengguna dengan role sebagai nasabah (customer) setelah berhasil login.
 
 Detail penjelasan:
@@ -191,7 +203,7 @@ Detail penjelasan:
       - Panel tombol dengan GridLayout vertikal (5 tombol disusun ke bawah).
 
 10.InvestasiSaham.java
---    
+-  
 InvestasiSaham adalah class model yang merepresentasikan satu transaksi atau kepemilikan saham oleh user.
 
 Penjelasan tiap bagian:
@@ -209,7 +221,10 @@ Method:
 - getUsername(): mengembalikan nama pengguna yang memiliki investasi ini.
 
 11.BuySahamWindow.java
---
+-
+![image](https://github.com/user-attachments/assets/5fc00662-403a-4a3f-a002-936b7b7e3029)
+
+
 BuySahamWindow adalah kelas yang membuat tampilan antarmuka pengguna untuk membeli saham.
 
 Penjelasan per bagian:
@@ -240,7 +255,7 @@ Penjelasan per bagian:
     - Menampilkan pesan "Berhasil membeli saham" dan menutup jendela pembelian.
 
 12.InvestasiSBN.java
---
+-
 InvestasiSBN adalah class model yang mewakili investasi pengguna terhadap Surat Berharga Negara (SBN).
 
 Penjelasan atribut dan method:
@@ -259,6 +274,9 @@ Method:
 
 13.BuySBNWindow.java
 -
+![image](https://github.com/user-attachments/assets/086752cb-4f07-4835-aed1-fa90426ece11)
+
+
 BuySBNWindow adalah kelas yang menyediakan tampilan antarmuka untuk membeli Surat Berharga Negara (SBN).
 
 Penjelasan per bagian:
@@ -281,7 +299,10 @@ Penjelasan per bagian:
     - Menampilkan pesan sukses dan menutup jendela.
 
 14.SimulasiSBNWindow.java
---
+-
+![image](https://github.com/user-attachments/assets/67cf3b8b-fd01-4d03-b8c1-6f04de4555db)
+
+
 SimulasiSBNWindow adalah jendela yang digunakan oleh nasabah (customer) untuk mensimulasikan hasil investasi SBN berdasarkan jumlah uang, bunga tahunan, dan durasi investasi.
 
 Penjelasan:
@@ -306,7 +327,10 @@ kuponBulanan = (rate / 100 / 12) * 0.9 * amount
 - Total kupon = kupon per bulan × jumlah bulan.
 
 15.PortfolioWindow.java
---
+-
+![image](https://github.com/user-attachments/assets/d4a30e46-e6f5-4dbd-bb5d-c91c1804ab3e)
+
+
 PortfolioWindow adalah kelas GUI untuk menampilkan portofolio investasi saham dan SBN milik user yang sedang login.
 
 Fungsi utama:
@@ -337,7 +361,7 @@ sellSahamAction()
   - Jika berhasil, data diperbarui.
 
 16.DataCenter.java
---
+-
 DataCenter adalah pusat data bersama (global storage) untuk seluruh data investasi dan daftar produk yang tersedia dalam aplikasi.
 
 Penjelasan tiap bagian:
